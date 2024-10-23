@@ -26,14 +26,9 @@ public class EnquiryController {
 	
 	@PostMapping("/add")
 	public Enquiry addEnquiry(@RequestBody Enquiry enq)
-	
 	{
-		
-		Enquiry e=ssi.saveData(enq);
-		
-		
+		Enquiry e=ssi.saveData(enq);	
 		return e;
-		
 	}
 	
 	@GetMapping("/get")
@@ -47,8 +42,6 @@ public class EnquiryController {
 		List<Enquiry> list = ssi.getallEnquiries();
 		return list;
 	}
-	
-	
 	
 	@DeleteMapping("/delete")
 	public ResponseEntity<Enquiry> delete(@PathVariable("id") int id){

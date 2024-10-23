@@ -1,5 +1,7 @@
 package com.cjc.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +40,12 @@ public class EnquiryController {
 	public Enquiry getSingleData()
 	{
 		return null;
+	}
+	
+	@GetMapping("/getall")
+	public List<Enquiry> getallEnquires(){
+		List<Enquiry> list = ssi.getallEnquiries();
+		return list;
 	}
 	
 	

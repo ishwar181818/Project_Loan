@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,11 +40,19 @@ public class EnquiryController {
 		return null;
 	}
 	
+	
+	
 	@DeleteMapping("/delete")
 	public ResponseEntity<Enquiry> delete(@PathVariable("id") int id){
 		ssi.deleteSingleCustomer(id);
 		return new ResponseEntity<Enquiry>(HttpStatus.OK);
 	}
 	
+	@PutMapping("/edit")
+	public ResponseEntity<Enquiry> updateCustomer(@RequestBody Enquiry enq)
+	{
+		Enquiry e = ssi.editCustomer(enq);
+		return new ResponseEntity<Enquiry> (e,HttpStatus.OK);
+	}
 
 }

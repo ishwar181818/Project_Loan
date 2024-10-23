@@ -7,4 +7,5 @@ import com.cjc.model.Enquiry;
 @Repository
 public interface Repo  extends JpaRepository<Enquiry, Integer>{
 
+	
 }

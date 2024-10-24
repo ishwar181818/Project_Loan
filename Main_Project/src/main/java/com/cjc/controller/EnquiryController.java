@@ -1,5 +1,7 @@
 package com.cjc.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,36 +25,60 @@ public class EnquiryController {
 	
 	
 	@PostMapping("/add")
-	public Enquiry addEnquiry(@RequestBody Enquiry enq)
+	public ResponseEntity<Enquiry> addEnquiry(@RequestBody Enquiry enq)
+	{
+		Enquiry e=ssi.saveData(enq);	
+		return new ResponseEntity<Enquiry>(e,HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/get/{cid}")
+	public ResponseEntity<Enquiry> getSingleData(@PathVariable int cid)
+	{
+		
+		
+	Enquiry enq=	ssi.getSingleData(cid);
+	
+		return new ResponseEntity<Enquiry>(enq,HttpStatus.OK);
+				
+	}
+	
+	@GetMapping("/getAll")
+	public ResponseEntity<List<Enquiry>> getallEnquires(){
+		List<Enquiry> list = ssi.getallEnquiries();
+		
+		return new ResponseEntity<List<Enquiry>>(list,HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/delete/{cid}")
+	public ResponseEntity<String> delete(@PathVariable int cid){
+		ssi.deleteSingleCustomer(cid);
+		return new ResponseEntity<String>("data has been deleted", HttpStatus.OK);
+	}
+	
+	@PutMapping("/edit/{cid}")
+	public ResponseEntity<Enquiry> updateData(@RequestBody Enquiry enq ,@PathVariable int cid)
 	
 	{
 		
-		Enquiry e=ssi.saveData(enq);
+		Enquiry e=ssi.updateData(enq,cid);
 		
 		
-		return e;
+		
+		return new ResponseEntity<Enquiry>(e,HttpStatus.OK);
 		
 	}
 	
-	@GetMapping("/get")
-	public Enquiry getSingleData()
+	
+	public ResponseEntity<String> deleteAllData()
+	
 	{
-		return null;
-	}
-	
-	
-	
-	@DeleteMapping("/delete")
-	public ResponseEntity<Enquiry> delete(@PathVariable("id") int id){
-		ssi.deleteSingleCustomer(id);
-		return new ResponseEntity<Enquiry>(HttpStatus.OK);
-	}
-	
-	@PutMapping("/edit")
-	public ResponseEntity<Enquiry> updateCustomer(@RequestBody Enquiry enq)
-	{
-		Enquiry e = ssi.editCustomer(enq);
-		return new ResponseEntity<Enquiry> (e,HttpStatus.OK);
+		
+		ssi.deleteAllData();
+		
+	return new ResponseEntity<String>("All data has been deleted",HttpStatus.OK);
+		
+		
+		
 	}
 
 }

@@ -13,8 +13,8 @@ import com.org.model.Cibil;
 public class CibilScoreController {
 	
 	
-	@GetMapping("/generate/{cibilid}")
-	public Cibil generate(@PathVariable int cibilid)
+	@GetMapping("/generate")
+	public Cibil generatescore()
 	
 	{
 		
@@ -24,7 +24,7 @@ public class CibilScoreController {
 		
 		int no= rm.nextInt(300, 900);
 		
-		cb.setCibilid(cibilid);
+		
 		
 		cb.setCibilscore(no);
 		

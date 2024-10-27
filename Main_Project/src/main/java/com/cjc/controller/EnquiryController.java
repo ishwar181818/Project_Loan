@@ -2,6 +2,8 @@ package com.cjc.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +25,12 @@ public class EnquiryController {
 	@Autowired
 	ServiceI ssi;
 	
-	
+	public static final Logger LOGGER = LoggerFactory.getLogger(EnquiryController.class);
 	@PostMapping("/add")
 	public ResponseEntity<Enquiry> addEnquiry(@RequestBody Enquiry enq)
 	{
+		
+		LOGGER.info("Data is Getting added");
 		Enquiry e=ssi.saveData(enq);	
 		return new ResponseEntity<Enquiry>(e,HttpStatus.CREATED);
 	}
@@ -34,9 +38,11 @@ public class EnquiryController {
 	@GetMapping("/get/{cid}")
 	public ResponseEntity<Enquiry> getSingleData(@PathVariable int cid)
 	{
+		LOGGER.info("All Data has been Getting for "+cid);
 		
-		
-	Enquiry enq=	ssi.getSingleData(cid);
+	   Enquiry enq=	ssi.getSingleData(cid);
+	
+	   
 	
 		return new ResponseEntity<Enquiry>(enq,HttpStatus.OK);
 				
@@ -44,14 +50,22 @@ public class EnquiryController {
 	
 	@GetMapping("/getAll")
 	public ResponseEntity<List<Enquiry>> getallEnquires(){
+		
+		LOGGER.info("All Data has been Get ");
 		List<Enquiry> list = ssi.getallEnquiries();
+		
+
 		
 		return new ResponseEntity<List<Enquiry>>(list,HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete/{cid}")
 	public ResponseEntity<String> delete(@PathVariable int cid){
+		
+		LOGGER.info(" Data has been deleting for "+cid);
 		ssi.deleteSingleCustomer(cid);
+		
+		
 		return new ResponseEntity<String>("data has been deleted", HttpStatus.OK);
 	}
 	
@@ -59,6 +73,8 @@ public class EnquiryController {
 	public ResponseEntity<Enquiry> updateData(@RequestBody Enquiry enq ,@PathVariable int cid)
 	
 	{
+		
+		LOGGER.info(" Data is getting updated for "+cid);
 		
 		Enquiry e=ssi.updateData(enq,cid);
 		
@@ -72,7 +88,7 @@ public class EnquiryController {
 	public ResponseEntity<String> deleteAllData()
 	
 	{
-		
+		LOGGER.info("  Deleting All Data " );
 		ssi.deleteAllData();
 		
 	return new ResponseEntity<String>("All data has been deleted",HttpStatus.OK);

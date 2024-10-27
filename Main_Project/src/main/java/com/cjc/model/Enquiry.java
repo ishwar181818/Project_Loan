@@ -26,6 +26,8 @@ public class Enquiry {
 	private long mobileno;
 	
 	private String pancard;
+	
+	private String enquirystatus;
 	@OneToOne(cascade = CascadeType.ALL)
 	private Cibil cb;
 	

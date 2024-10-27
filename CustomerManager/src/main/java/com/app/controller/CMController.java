@@ -5,8 +5,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +22,7 @@ import com.app.model.Cibil;
 import com.app.model.Enquiry;
 import com.app.servicei.ServiceI;
 
+
 @RestController
 @RequestMapping("/cm")
 public class CMController {
@@ -28,15 +33,17 @@ public class CMController {
 	@Autowired
 	ServiceI ssi;
 	
+	public static final Logger LOGGER = LoggerFactory.getLogger(CMController.class);
+	
 	@PutMapping("/put/{cid}")
-	public  String updateDataOfCibil(@PathVariable int cid, @RequestBody Enquiry enq1)
+	public  ResponseEntity<String> updateDataOfCibil(@PathVariable int cid)
    
    {
-		
+		LOGGER.info("Fetching data from RM And Third Party Api");
 		
 		String url="http://localhost:8081/enq/getAll";
 		
-		String url1 ="http://localhost:9091/generate/"+ enq1.getCb().getCibilid();
+		String url1 ="http://localhost:9091/generate";
 		
 		Enquiry[]arr=rt.getForObject(url, Enquiry[].class);
 		
@@ -55,18 +62,11 @@ public class CMController {
 			if(enq.getCid()==cid)
 				
 			{
-				
-				if(enq.getCb() == null)
-				{
-				   enq.setCb(new Cibil());
-				}
+				Cibil c1 = new Cibil();
 				
 				
-					enq.getCb().setCibilid(enq1.getCb().getCibilid());
-					
-					enq.getCb().setCibilscore(cb.getCibilscore());
-					
-					
+				c1.setCibilscore(cb.getCibilscore());
+				
 				
 				
 				//enq.getCb().setCibilid(enq1.getCb() != null ? enq1.getCb().getCibilid() : 0);
@@ -75,55 +75,55 @@ public class CMController {
 				
 				
 				
-			if(enq.getCb().getCibilscore()>=801 && enq.getCb().getCibilscore() <= 900 )
+			if(c1.getCibilscore()>=801 && c1.getCibilscore() <= 900 )
 				
 			{
 				
-				enq.getCb().setStatus("Excellent");
+				c1.setStatus("Excellent");
 				
-				enq.getCb().setCibilremark("Eligible for Loan");
+				c1.setCibilremark("Eligible for Loan");
 				
 				
 				
 			}
 			
-			else if(enq.getCb().getCibilscore()>=761 && enq.getCb().getCibilscore() <= 800)
+			else if(c1.getCibilscore()>=761 && c1.getCibilscore() <= 800)
 			{
 				
-                enq.getCb().setStatus("Very Good");
+				c1.setStatus("Very Good");
 				
-				enq.getCb().setCibilremark("Eligible for Loan");
+				c1.setCibilremark("Eligible for Loan");
 				
 				
 			}
 				
 				
-			else if(enq.getCb().getCibilscore()>=701 && enq.getCb().getCibilscore() <= 760)
+			else if(c1.getCibilscore()>=701 && c1.getCibilscore() <= 760)
 			{
 				
-                enq.getCb().setStatus("Good");
+				c1.setStatus("Good");
 				
-				enq.getCb().setCibilremark("Eligible for Loan");
-				
-				
-			}
-			
-			else if(enq.getCb().getCibilscore()>=601 && enq.getCb().getCibilscore() <= 700)
-			{
-				
-                enq.getCb().setStatus("Average");
-				
-				enq.getCb().setCibilremark("Not Eligible for loan");
+				c1.setCibilremark("Eligible for Loan");
 				
 				
 			}
 			
-			else if(enq.getCb().getCibilscore()>=300 && enq.getCb().getCibilscore() <= 600)
+			else if(c1.getCibilscore()>=601 && c1.getCibilscore() <= 700)
 			{
 				
-                enq.getCb().setStatus("Needs Help");
+				c1.setStatus("Average");
 				
-				enq.getCb().setCibilremark("Not Eligible for Loan");
+				c1.setCibilremark("Not Eligible for loan");
+				
+				
+			}
+			
+			else if(c1.getCibilscore()>=300 && c1.getCibilscore() <= 600)
+			{
+				
+				c1.setStatus("Needs Help");
+				
+				c1.setCibilremark("Not Eligible for Loan");
 				
 				
 			}
@@ -136,7 +136,12 @@ public class CMController {
 			
 			String formattedDate = formatter.format(date);
 			
-			enq.getCb().setCibilscoredateandtime(formattedDate);
+			c1.setCibilscoredateandtime(formattedDate);
+			
+			if(enq.getCb() == null)
+				{
+				   enq.setCb(c1);
+			}
 			
 			
 			ssi.updatecibildata(enq);
@@ -153,10 +158,43 @@ public class CMController {
 	   
 	   
 		
-		return "CIBIL Score has been patched succesfully for "+":"+ cid ;
+		return new ResponseEntity<String>("CIBIL Score has been patched succesfully for "+":"+"Customer id"+":"+ cid,HttpStatus.OK) ;
 	   
 	   
    }
+	
+	@GetMapping("/getAll")
+	public List<Enquiry> getAllEnquires()
+	
+	{
+		
+		
+		List<Enquiry>l=ssi.getAllEnquires();
+		
+		
+		return l;
+		
+	}
+	
+	@GetMapping("/get/{enquirystatus}")
+	public List<Enquiry>showRejectedEnquiry(@PathVariable String enquirystatus )
+	
+	{
+		
+		
+		List<Enquiry>l=ssi.findByenquirystatus(enquirystatus);
+		
+		
+		return l;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
 	

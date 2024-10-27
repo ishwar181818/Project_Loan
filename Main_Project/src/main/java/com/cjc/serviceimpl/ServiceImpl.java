@@ -11,12 +11,16 @@ import com.cjc.repo.Repo;
 import com.cjc.servicei.ServiceI;
 @Service
 public class ServiceImpl implements ServiceI {
+	
+	String enquirystatus="pending";
+	
 	@Autowired
 	Repo rr;
 
 	@Override
 	public Enquiry saveData(Enquiry enq) {
 		
+		enq.setEnquirystatus(enquirystatus);	
 		
 		Enquiry e=rr.save(enq);
 		

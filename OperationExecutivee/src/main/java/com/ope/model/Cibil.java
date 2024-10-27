@@ -1,4 +1,4 @@
-package com.app.model;
+package com.ope.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +12,6 @@ public class Cibil {
 	
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int cibilid;
 	
 	private int cibilscore;

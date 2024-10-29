@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cjc.exception.MailidInvalidException;
+import com.cjc.exception.MobileNoInvalidException;
 import com.cjc.model.Enquiry;
 import com.cjc.repo.Repo;
 import com.cjc.servicei.ServiceI;
@@ -20,7 +22,47 @@ public class ServiceImpl implements ServiceI {
 	@Override
 	public Enquiry saveData(Enquiry enq) {
 		
-		enq.setEnquirystatus(enquirystatus);	
+		enq.setEnquirystatus(enquirystatus);
+		long digit =0;
+		
+    for(long i = enq.getMobileno() ; i > 0 ;i= i/10)
+		
+	    {
+		
+		
+			digit++;
+			
+		}
+		
+		if(digit== 10)
+			
+		{
+			System.out.println("Mobile No is Valid");
+			
+		}
+		
+		else
+			
+		{
+			throw new MobileNoInvalidException("Mobile No is Invalid");
+			
+			
+		}
+		
+		if(enq.getEmail().contains("@gmail.com"))
+			
+		{
+			
+			System.out.println("Email is valid");
+		}
+		
+		else
+			
+		{
+			
+			throw new MailidInvalidException("Email is Invalid");
+			
+		}
 		
 		Enquiry e=rr.save(enq);
 		

@@ -1,5 +1,8 @@
 package com.ope.serviceimpl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +11,25 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.ope.exception.AlreadyApprovedORRejectException;
 import com.ope.model.Enquiry;
+import com.ope.model.LoanApplication;
 import com.ope.repo.Repo;
+import com.ope.repo.RepoLoanApplication;
 import com.ope.servicei.ServiceI;
 @Service
 public class ServiceImpl implements ServiceI{
 	@Autowired
 	Repo rr;
+	@Autowired
+	RepoLoanApplication rla;
 	
 	@Autowired
 	  JavaMailSender jms;
+	
+	private String statussubmitted="Submitted";
+	
+	
 	
 	@Value("${spring.mail.username}")
 	private static String FROM_MAIL;
@@ -117,7 +129,7 @@ public class ServiceImpl implements ServiceI{
 			else {
 				
 				
-			throw new RuntimeException("Customer Enquiry Status Already Approved or Rejected before");
+			throw new AlreadyApprovedORRejectException("Customer Enquiry Status Already Approved or Rejected before");
 				
 				
 			}
@@ -132,6 +144,104 @@ public class ServiceImpl implements ServiceI{
 			
 			
 		}
+		
+		
+		
+		
+	}
+
+	@Override
+	public List<LoanApplication> getAllLoanAppliedData() {
+		
+		List<LoanApplication>l=rla.findAll();
+		
+		
+		return l;
+	}
+
+	@Override
+	public LoanApplication LoanAndDocsVerified(int customerid,String docstatus) {
+		
+		
+		Optional<LoanApplication>op=rla.findById(customerid);
+		
+		
+		if(op.isPresent())
+		{
+			
+			
+			LoanApplication loan= op.get();
+			
+			
+			if(loan.getAllpersonaldoc().getDocstatus().equals(statussubmitted));
+			
+			{
+				
+				loan.getAllpersonaldoc().setDocstatus(docstatus);
+				
+				loan.setLoanstatus(docstatus);
+				
+				loan.getCv().setCustomerverificationstatus(docstatus);
+				
+				loan.getCv().setRemarks("Loan Sanctioning is in Process");
+				
+				Date date = new Date();
+				
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				
+				String formattedDate = formatter.format(date);
+				
+				loan.getCv().setVerificationdate(formattedDate);
+				
+				
+				
+				
+			}
+			
+			
+			StringBuilder emailBody = new StringBuilder();
+	        emailBody.append("Dear ").append(loan.getCustomername()).append(",\n\n")
+	                .append("Your loan application has been submitted with the following details:\n\n")
+	                .append("Date of Birth: ").append(loan.getDateofbirth()).append("\n")
+	                .append("Age: ").append(loan.getCustomerage()).append("\n")
+	                .append("Required Tenure: ").append(loan.getRequiretenure()).append(" years\n")
+	                .append("Gender: ").append(loan.getCustomergender()).append("\n")
+	                .append("Mobile No: ").append(loan.getCustomermobileno()).append("\n")
+	                .append("Total Loan Required: ").append(loan.getTotalloanrequired()).append("\n")
+	                .append("Loan Status: ").append(loan.getLoanstatus()).append("\n")
+	                .append("Account Holder Name: ").append(loan.getAc().getAccountholdername()).append("\n")
+	                .append("Account Type: ").append(loan.getAc().getAccounttype()).append("\n")
+	                .append("Guarantor Name: ").append(loan.getGd().getGuarantorname()).append("\n")
+	                .append("Verification date: ").append(loan.getCv().getVerificationdate()).append("\n")
+	                .append("Customer Verification Status: ").append(loan.getCv().getCustomerverificationstatus()).append("\n")
+	                .append("Remarks: ").append(loan.getCv().getRemarks()).append("\n\n")
+	                
+	                .append("Thank you for your application!\n\n")
+	                .append("Best regards,\n")
+	                .append("Your Loan Team");
+
+	        SimpleMailMessage simple = new SimpleMailMessage();
+	        simple.setTo("ishwarharbade55@gmail.com"); // to send
+	       
+	        simple.setFrom(FROM_MAIL);  // send from
+	        simple.setSubject("Congragulations! Your Loan Approved and In Process of Sanctioning");
+	        simple.setText(emailBody.toString());
+	        
+	        jms.send(simple);
+			LoanApplication loanverified=rla.save(loan);
+			
+			return loanverified;
+			
+		}
+		else {
+			
+			
+			return null;
+			
+			
+			
+		}
+		
 		
 		
 		

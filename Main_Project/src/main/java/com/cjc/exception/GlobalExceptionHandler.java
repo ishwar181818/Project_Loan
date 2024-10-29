@@ -1,4 +1,4 @@
- package com.ope.exception;
+ package com.cjc.exception;
 
 import java.util.Date;
 
@@ -14,8 +14,29 @@ public class GlobalExceptionHandler {
 	
 	
 	
-	@ExceptionHandler(AlreadyApprovedORRejectException.class)
-	public ResponseEntity<ApiResponse> AlreadyApprovedORRejectExceptionHandler(AlreadyApprovedORRejectException e,HttpServletRequest request) {
+	@ExceptionHandler(MailidInvalidException.class)
+	public ResponseEntity<ApiResponse> MailidInvalidExceptionHandler(MailidInvalidException e,HttpServletRequest request) {
+		
+		
+		System.out.println("Handle");
+		
+		ApiResponse error = new ApiResponse();
+		
+		error.setDate(new Date());
+		
+		error.setMsg(e.getMessage());
+		
+		error.setStatuscode(HttpStatus.NOT_FOUND.value());
+		
+		error.setErrorMessage(HttpStatus.NOT_FOUND);
+		error.setUrl(request.getRequestURI());
+		
+		
+		return new ResponseEntity<ApiResponse>(error,HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(MobileNoInvalidException.class)
+	public ResponseEntity<ApiResponse> MobileNoInvalidExceptionHandler(MobileNoInvalidException e,HttpServletRequest request) {
 		
 		
 		System.out.println("Handle");

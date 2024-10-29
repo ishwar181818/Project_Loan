@@ -1,4 +1,4 @@
-package com.app.controller;
+ package com.app.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -177,7 +177,7 @@ public class CMController {
 	}
 	
 	@GetMapping("/get/{enquirystatus}")
-	public List<Enquiry>showRejectedEnquiry(@PathVariable String enquirystatus )
+	public List<Enquiry>showEnquiry(@PathVariable String enquirystatus )
 	
 	{
 		

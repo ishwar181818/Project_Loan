@@ -15,4 +15,14 @@ public interface ServiceI {
 
 	public LoanApplication LoanAndDocsVerified(int customerid, String docstatus);
 
+	public Enquiry getSingledata(int cid);
+
+	public List<Enquiry> getAllEnquiry();
+
+	public void deleteSingleData(int cid);
+
+	public void deleteCustomerLoanData(int customerid);
+
+	public LoanApplication getSingleLoanData(int customerid);
+
 }

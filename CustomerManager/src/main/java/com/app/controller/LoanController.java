@@ -3,10 +3,15 @@ package com.app.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -28,6 +33,11 @@ public class LoanController {
 	RestTemplate rt;
 	
 	private String enquirystatus="Approved";
+	
+	@Value("${server.port}")
+	String port;
+	
+	public static final Logger LOGGER = LoggerFactory.getLogger(LoanController.class);
 	
 	@PostMapping("/loan")
 	public ResponseEntity<String> addEmployee(@RequestPart("info") String json,
@@ -51,6 +61,8 @@ public class LoanController {
 		
 		////esi.saveEmplyeeData(json,pancard,aadharcard);
 		
+		LOGGER.info("Posting Loan application ");
+		
 		String url = "http://localhost:8082/cm/get/"+ enquirystatus;
 		
 		Enquiry[]enq=rt.getForObject(url, Enquiry[].class);
@@ -69,15 +81,67 @@ public class LoanController {
 	}
 	
 	@GetMapping("/getAll")
-	public List<LoanApplication> getAllLoanSubmittedDetails()
+	public ResponseEntity<List<LoanApplication>> getAllLoanSubmittedDetails()
 	
 	{
 		
+		LOGGER.info("Getting All data of Loan application ");
+		
 		List<LoanApplication>list=esi.getAllLoanSubmittedDetails();
 		
+		System.out.println("port Executing is"+":"+port);
 		
-		return list;
+		
+		return new ResponseEntity<List<LoanApplication>>(list,HttpStatus.OK) ;
 	}
+	
+	
+	@DeleteMapping("/del/{customerid}")
+	public ResponseEntity<String> deleteSingleData(@PathVariable int customerid)
+	
+	
+	
+	{
+		LOGGER.info("deleting Single data of  Loan application ");
+		esi.deleteCustomerLoanData(customerid);
+		
+		
+		return new ResponseEntity<String>("data has been deleted for "+":"+customerid,HttpStatus.NO_CONTENT);
+		
+	}
+	
+	@GetMapping("/getsingledata/{customerid}")
+	public ResponseEntity<LoanApplication> getSingleLoanData(@PathVariable int customerid )
+	
+	{
+		
+		
+		LOGGER.info("Getting single data of  Loan application ");
+		LoanApplication loan=esi.getSingleLoanData(customerid);
+		
+		
+		 
+		
+		
+		return new ResponseEntity<LoanApplication>(loan,HttpStatus.OK);
+		
+	}
+	
+	@DeleteMapping("/delAll")
+	public ResponseEntity<String> deleteAllData()
+	
+	{
+		LOGGER.info("Deleting All Data of Loan Application ");
+		esi.deleteAllData();
+		
+	return new ResponseEntity<String>("All data has been deleted",HttpStatus.OK);
+		
+		
+		
+	}	
+	
+	
+	
 	
 	
 

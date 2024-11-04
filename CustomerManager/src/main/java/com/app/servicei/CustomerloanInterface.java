@@ -18,4 +18,10 @@ public interface CustomerloanInterface {
 
 	public List<LoanApplication> getAllLoanSubmittedDetails();
 
+	public void deleteCustomerLoanData(int customerid);
+
+	public LoanApplication getSingleLoanData(int customerid);
+
+	public void deleteAllData();
+
 }

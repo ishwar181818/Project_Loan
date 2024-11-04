@@ -11,7 +11,10 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+
 import com.ope.exception.AlreadyApprovedORRejectException;
+import com.ope.exception.EnquiryNotAvailable;
+import com.ope.exception.LoanApplicationdataNotPresentException;
 import com.ope.model.Enquiry;
 import com.ope.model.LoanApplication;
 import com.ope.repo.Repo;
@@ -22,12 +25,12 @@ public class ServiceImpl implements ServiceI{
 	@Autowired
 	Repo rr;
 	@Autowired
-	RepoLoanApplication rla;
+	RepoLoanApplication rla;////For Loan Application
 	
 	@Autowired
 	  JavaMailSender jms;
 	
-	private String statussubmitted="Submitted";
+	private String statussubmitted="Verified";
 	
 	
 	
@@ -140,7 +143,7 @@ public class ServiceImpl implements ServiceI{
 		else
 			
 		{
-			return null;
+			throw new EnquiryNotAvailable("Enquiry Not available for "+":"+cid);
 			
 			
 		}
@@ -173,11 +176,11 @@ public class ServiceImpl implements ServiceI{
 			LoanApplication loan= op.get();
 			
 			
-			if(loan.getAllpersonaldoc().getDocstatus().equals(statussubmitted));
+			if(loan.getAllpersonaldoc().getDocstatus().equals(statussubmitted)) 
 			
 			{
 				
-				loan.getAllpersonaldoc().setDocstatus(docstatus);
+				
 				
 				loan.setLoanstatus(docstatus);
 				
@@ -192,12 +195,8 @@ public class ServiceImpl implements ServiceI{
 				String formattedDate = formatter.format(date);
 				
 				loan.getCv().setVerificationdate(formattedDate);
-				
-				
-				
-				
-			}
 			
+			LoanApplication loanverified=rla.save(loan);
 			
 			StringBuilder emailBody = new StringBuilder();
 	        emailBody.append("Dear ").append(loan.getCustomername()).append(",\n\n")
@@ -228,24 +227,123 @@ public class ServiceImpl implements ServiceI{
 	        simple.setText(emailBody.toString());
 	        
 	        jms.send(simple);
-			LoanApplication loanverified=rla.save(loan);
+			
 			
 			return loanverified;
 			
-		}
+			}
+			
+		
 		else {
 			
 			
-			return null;
+		
+			throw  new RuntimeException("Loan docs are NotSubmitted or verified yet");
+			
 			
 			
 			
 		}
 		
+		
+		}
+		
+		else {
+			
+			throw new EnquiryNotAvailable("Enquiry Not available for "+":"+customerid);
+			
+		}
+		
+		
+	}
+
+	@Override
+	public Enquiry getSingledata(int cid) {
+		
+		Optional<Enquiry>op= rr.findById(cid);
+		
+		
+			
+			if(op.isPresent())
+				
+			{
+				Enquiry eq = op.get();
+				
+				return eq;
+				
+			}
+			
+			else
+				
+			{
+				
+				throw new EnquiryNotAvailable("Enquiry Not available for "+":"+cid);
+				
+				
+			}
 		
 		
 		
 		
 	}
+
+	@Override
+	public List<Enquiry> getAllEnquiry() {
+		
+		
+		List<Enquiry>l=rr.findAll();
+		
+		
+		return l;
+	}
+
+	@Override
+	public void deleteSingleData(int cid) {
+		
+		
+		rr.deleteById(cid);
+		
+		
+		
+	}
+
+	@Override
+	public void deleteCustomerLoanData(int customerid) {
+		
+		
+		
+		rla.deleteById(customerid);
+		
+		
+	}
+
+	@Override
+	public LoanApplication getSingleLoanData(int customerid) {
+		
+		Optional<LoanApplication>op=rla.findById(customerid);
+		
+		if(op.isPresent())
+			
+		{
+			
+		LoanApplication loan	= op.get();
+			
+			return loan;
+		}
+		
+		else
+			
+		{
+			
+			
+			throw new LoanApplicationdataNotPresentException("Loan Application data for "+":"+customerid+"Not Present");
+			
+		}
+		
+		
+		
+	}
+	
+	
 
 }

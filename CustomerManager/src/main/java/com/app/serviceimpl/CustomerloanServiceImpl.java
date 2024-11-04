@@ -2,11 +2,14 @@ package com.app.serviceimpl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.app.exception.LoanApplicationdataNotPresentException;
+import com.app.exception.MobileNoNotMatching;
 import com.app.model.AccountDetails;
 import com.app.model.CustomerAddress;
 import com.app.model.AllPersonalDoc;
@@ -59,6 +62,7 @@ public class CustomerloanServiceImpl implements CustomerloanInterface{
 					emp.setCustomerid(enq.getCid());
 				
 				    emp.setCustomername(enq.getFirstname().concat(" ").concat(enq.getLastname()));
+				    
 				    break;
 				}
 				
@@ -68,7 +72,7 @@ public class CustomerloanServiceImpl implements CustomerloanInterface{
 			}
 			
 			if (!mobileMatchFound) {
-                throw new RuntimeException("MobileNo not matching. Please insert mobileno updated during Enquiry.");
+                throw new MobileNoNotMatching("MobileNo not matching. Please insert mobileno updated during Enquiry.");
             }
 			
 					
@@ -181,7 +185,56 @@ public class CustomerloanServiceImpl implements CustomerloanInterface{
 		
 		
 		List<LoanApplication>List=er.findAll();
+		
 		return List;
+	}
+
+	@Override
+	public void deleteCustomerLoanData(int customerid) {
+		
+		er.deleteById(customerid);
+		
+		
+		
+		
+	}
+
+	@Override
+	public LoanApplication getSingleLoanData(int customerid) {
+		
+		
+		Optional<LoanApplication>op=er.findById(customerid);
+		
+		
+		if(op.isPresent())
+			
+		{
+			LoanApplication loan=op.get();
+			
+			
+			return loan;
+			
+		}
+		
+		else
+			
+		{
+			
+			
+			
+			throw new LoanApplicationdataNotPresentException("Loan Application data for "+":"+customerid+"Not Present");
+			
+		}
+		
+		
+		
+	}
+
+	@Override
+	public void deleteAllData() {
+		
+		
+		er.deleteAll();
 	}
 	
 	

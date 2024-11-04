@@ -8,10 +8,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +29,12 @@ import com.app.servicei.ServiceI;
 @RestController
 @RequestMapping("/cm")
 public class CMController {
+	
+	@Value("${server.port}")
+	String port;
+	
+	//
+	
 	
 	
 	@Autowired
@@ -164,32 +173,44 @@ public class CMController {
    }
 	
 	@GetMapping("/getAll")
-	public List<Enquiry> getAllEnquires()
+	public ResponseEntity<List<Enquiry>>getAllEnquires()
 	
 	{
-		
+		LOGGER.info("Getting All data");
 		
 		List<Enquiry>l=ssi.getAllEnquires();
+		System.out.println("port Executing is"+":"+port);
 		
-		
-		return l;
+		return new ResponseEntity<List<Enquiry>>(l,HttpStatus.OK);
 		
 	}
 	
-	@GetMapping("/get/{enquirystatus}")
-	public List<Enquiry>showEnquiry(@PathVariable String enquirystatus )
+	@GetMapping("/get/{enquirystatus}")//(use for Approved and Rejected)
+	public ResponseEntity<List<Enquiry>>showEnquiry(@PathVariable String enquirystatus )
 	
 	{
-		
+		LOGGER.info("Getting single data ");
 		
 		List<Enquiry>l=ssi.findByenquirystatus(enquirystatus);
 		
 		
-		return l;
+		return new ResponseEntity<List<Enquiry>>(l,HttpStatus.OK);
 	}
 	
 	
 	
+	@DeleteMapping("/del/{cid}")
+	public ResponseEntity<String> deleteData(@PathVariable int cid)
+
+	{
+		LOGGER.info("Deleting single data");
+		
+		  ssi.deletedata(cid);
+
+		
+		return new ResponseEntity<String>("data has been deleted for"+":"+ cid,HttpStatus.NO_CONTENT);
+		
+	}
 	
 	
 	

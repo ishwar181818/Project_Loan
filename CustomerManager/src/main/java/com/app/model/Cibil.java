@@ -10,7 +10,6 @@ import lombok.Data;
 @Data
 public class Cibil {
 	
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int cibilid;

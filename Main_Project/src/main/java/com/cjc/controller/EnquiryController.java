@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +26,9 @@ public class EnquiryController {
 	@Autowired
 	ServiceI ssi;
 	
+	@Value("${server.port}")
+		String port;
+	
 	public static final Logger LOGGER = LoggerFactory.getLogger(EnquiryController.class);
 	@PostMapping("/add")
 	public ResponseEntity<Enquiry> addEnquiry(@RequestBody Enquiry enq)
@@ -38,6 +42,9 @@ public class EnquiryController {
 	@GetMapping("/get/{cid}")
 	public ResponseEntity<Enquiry> getSingleData(@PathVariable int cid)
 	{
+		
+		
+		
 		LOGGER.info("All Data has been Getting for "+cid);
 		
 	   Enquiry enq=	ssi.getSingleData(cid);
@@ -50,6 +57,8 @@ public class EnquiryController {
 	
 	@GetMapping("/getAll")
 	public ResponseEntity<List<Enquiry>> getallEnquires(){
+		
+		System.out.println("port Executing is"+":"+port);
 		
 		LOGGER.info("All Data has been Get ");
 		List<Enquiry> list = ssi.getallEnquiries();
@@ -84,7 +93,7 @@ public class EnquiryController {
 		
 	}
 	
-	
+	@DeleteMapping("/delAll")
 	public ResponseEntity<String> deleteAllData()
 	
 	{

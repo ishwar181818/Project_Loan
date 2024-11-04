@@ -6,8 +6,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cjc.exception.EnquiryNotavailbale;
 import com.cjc.exception.MailidInvalidException;
 import com.cjc.exception.MobileNoInvalidException;
+import com.cjc.exception.NameNotAccepatable;
+import com.cjc.exception.NotEligibleforLoanException;
+import com.cjc.exception.PancardNotAccepable;
 import com.cjc.model.Enquiry;
 import com.cjc.repo.Repo;
 import com.cjc.servicei.ServiceI;
@@ -64,6 +68,73 @@ public class ServiceImpl implements ServiceI {
 			
 		}
 		
+		if(enq.getAge() >= 18)
+		{
+			
+			
+			System.out.println("Person Eligible for Applying For the Loan");
+			
+			
+		}
+		
+		else {
+			
+			throw new NotEligibleforLoanException("Not Eligible For Loan as age is less than 18 years ");
+			
+		}
+		
+		String panCard = enq.getPancard();
+		
+		if (panCard.length() != 10) {
+			throw new PancardNotAccepable("PAN card must be exactly 10 characters long");
+		}
+		
+		
+		
+		
+		
+		
+		for (char c : panCard.toCharArray()) {
+			if (!((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z'))) {
+				throw new PancardNotAccepable("PAN card Not acceptable: must contain only letters(Uppercase) and digits");
+			}
+		}
+       
+       System.out.println("Pancard is Valid");
+       
+    
+       for(char name:enq.getFirstname().toCharArray())
+    	   
+       {
+    	   
+    	   if(!((name >= 'a' && name <='z') || (name >= 'A' && name <='Z')))
+    		   
+    	   {
+    		   throw new NameNotAccepatable("First Name Not accepatable");
+    		   
+    	   }
+    	   
+       }
+       
+       System.out.println("FirstName is Valid");
+       
+for(char l:enq.getLastname().toCharArray())
+    	   
+       {
+    	   
+    	   if(!((l >= 'a' && l <='z') || (l >= 'A' && l <='Z')))
+    		   
+    	   {
+    		   throw new NameNotAccepatable("last Name Not accepatable");
+    		   
+    	   }
+    	   
+       }
+
+
+      System.out.println("Last Name is Valid");
+      
+      
 		Enquiry e=rr.save(enq);
 		
 		
@@ -123,7 +194,8 @@ public class ServiceImpl implements ServiceI {
 	
 	else {
 		
-		return null;
+		
+		throw new EnquiryNotavailbale("Enquiry Not available for "+":"+cid);
 		
 		
 	}
@@ -154,7 +226,7 @@ public class ServiceImpl implements ServiceI {
 		else {
 			
 			
-			return null;
+			throw new EnquiryNotavailbale("Enquiry Not available for "+":"+cid);
 			
 			
 		}

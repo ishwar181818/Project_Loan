@@ -13,4 +13,6 @@ public List<Enquiry> getAllEnquires();
 
 public List<Enquiry> findByenquirystatus(String enquirystatus);
 
+public void deletedata(int cid);
+
 }

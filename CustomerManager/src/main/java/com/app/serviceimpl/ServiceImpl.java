@@ -77,11 +77,17 @@ public class ServiceImpl implements ServiceI {
 		
 		List<Enquiry>l=rr.findByEnquirystatus(enquirystatus);
 		
-		
-		
-		
-		
 		return l;
+	}
+	@Override
+	public void deletedata(int cid) {
+		
+		
+		
+		rr.deleteById(cid);
+		
+		
+		
 	}
 	
 	

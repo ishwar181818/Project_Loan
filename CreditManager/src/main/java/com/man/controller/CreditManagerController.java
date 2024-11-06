@@ -84,7 +84,7 @@ public class CreditManagerController {
 					
 				{
 					
-					cl.setCreditlimit(100000);	
+					cl.setCreditlimit(1000000);	
 					
 				}
 				

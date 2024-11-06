@@ -1,4 +1,4 @@
-package com.ope.serviceimpl;
+ package com.ope.serviceimpl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -203,7 +203,7 @@ public class ServiceImpl implements ServiceI{
 	                .append("Your loan application has been submitted with the following details:\n\n")
 	                .append("Date of Birth: ").append(loan.getDateofbirth()).append("\n")
 	                .append("Age: ").append(loan.getCustomerage()).append("\n")
-	                .append("Required Tenure: ").append(loan.getRequiretenure()).append(" years\n")
+	                .append("Required Tenure: ").append(loan.getRequiretenure()).append(" months\n")
 	                .append("Gender: ").append(loan.getCustomergender()).append("\n")
 	                .append("Mobile No: ").append(loan.getCustomermobileno()).append("\n")
 	                .append("Total Loan Required: ").append(loan.getTotalloanrequired()).append("\n")

@@ -1,4 +1,4 @@
-package com.ope.model;
+package com.acc.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -42,4 +42,7 @@ public class Ledger {
 	
 	private String loanstatus;
 	
+	
+	
+
 }

@@ -275,9 +275,17 @@ double monthlyEmiAmount = calculateEMI(
     );
     sl.setMonthlyemiamount(monthlyEmiAmount);
     
+    double PayableAmountwithinterest = monthlyEmiAmount *sl.getLoantenureinmonth();
+    
     cell.setPhrase(new Phrase("Monthly EMI", font));
 	 table.addCell(cell);
 	 cell.setPhrase(new Phrase(String.format("₹ %.2f", monthlyEmiAmount), font1));
+	 table.addCell(cell);
+	 
+	 cell.setPhrase(new Phrase("Payable Amount with Interest", font));
+	 table.addCell(cell);
+
+	 cell.setPhrase(new Phrase(String.format("₹ %.2f", PayableAmountwithinterest), font1));
 	 table.addCell(cell);
 	 
 	 document.add(table);

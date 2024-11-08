@@ -1,10 +1,17 @@
 package com.man.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 @Entity
@@ -47,8 +54,8 @@ public class LoanApplication {
 	private GuarantorDetails gd;
 	@OneToOne(cascade=CascadeType.ALL)
 	private LoanDisbursement ld;
-	@OneToOne(cascade=CascadeType.ALL)
-	private Ledger led;
+	@OneToMany(cascade=CascadeType.ALL)
+	private Set<Ledger>led = new HashSet<Ledger>();
 	@OneToOne(cascade=CascadeType.ALL)
 	private SanctionLetter sanctionletter;
 	@OneToOne(cascade=CascadeType.ALL)

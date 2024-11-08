@@ -12,8 +12,28 @@ public class LoanDisbursement {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int loandisbursementid;
+	private int agreementid;
 	
 	private int loanno;
+	
+	private String agreementdate;
+	
+	private String amountpaytype;
+	
+	private double totalamount;
+	
+	private String bankname;
+	
+	private long accountnumber;
+	
+	private String ifsccode;
+	
+	private String accounttype;
+	
+	private double transferamount;
+	
+	private String paymentstatus;
+	
+	private String amountpaiddate;
 
 }

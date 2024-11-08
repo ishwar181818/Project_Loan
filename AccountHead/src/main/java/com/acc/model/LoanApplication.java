@@ -1,9 +1,7 @@
-package com.ope.model;
+package com.acc.model;
 
 import java.util.HashSet;
 import java.util.Set;
-
-
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -62,7 +60,8 @@ public class LoanApplication {
 	private CustomerVerfication cv;
 	
 	
-	
+//	@OneToMany(cascade=CascadeType.ALL)
+//	private Set<Employee>e = new HashSet<>();
 	
 
 }

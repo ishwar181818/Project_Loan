@@ -114,11 +114,7 @@ public class CustomerloanServiceImpl implements CustomerloanInterface{
 			            
 			        }
 					
-					if (emp.getLed() == null) {
-			            emp.setLed(new Ledger());
-			            
-			            
-			        }
+					
 					
 					if (emp.getSanctionletter() == null) {
 			            emp.setSanctionletter(new SanctionLetter());

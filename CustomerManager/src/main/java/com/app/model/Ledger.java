@@ -14,6 +14,33 @@ public class Ledger {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int ledgerid;
 	
+	private String ledgercreateddate;
+	
+	private double totalloanamount;
+	
+	private double payableamountwithinterest;
+	
+	private int tenure;
+	
+	private double monthlyemi;
+	
+	private double amountpaidtilldate;
+	
+	private double remainingamount;
+	
+	private String nextemidatestart;
+	
+	private String nextemidateend;
+	
+	private int defaultercount;
+	
 	private String previousemistatus;
+	
+	private String currentmonthemistatus;
+	
+	private String loanenddate;
+	
+	private String loanstatus;
+	
 
 }

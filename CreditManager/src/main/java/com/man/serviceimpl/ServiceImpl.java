@@ -410,6 +410,40 @@ double monthlyEmiAmount = calculateEMI(
 		
 		
 	}
+	@Override
+	public String setloanstatus(int customerid, String loanstatus) {
+		
+		
+		Optional<LoanApplication>op=lar.findById(customerid);
+		
+		if(op.isPresent())
+			
+		{
+			LoanApplication loan=op.get();
+			
+			
+			if(loan.getSanctionletter().getLoanamtsanctioned()!= 0)
+				
+			{
+				loan.setLoanstatus(loanstatus);
+				
+				
+				lar.save(loan);
+			}
+			
+			
+			
+		}
+		
+		else {
+			throw new RuntimeException("Customer Not Present");
+			
+			
+		}
+		
+		
+		return "loan Status Updated";
+	}
 	
 
 	

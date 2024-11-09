@@ -1,5 +1,7 @@
 package com.acc.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.acc.servicei.ServiceI;
 
 
+
 @RestController
 @RequestMapping("/dis")
 public class AccountHeadController {
@@ -18,13 +21,13 @@ public class AccountHeadController {
 	@Autowired
 	ServiceI ssi;
 	
-	
+	public static final Logger LOGGER = LoggerFactory.getLogger(AccountHeadController.class);
 	
 	@PutMapping("/add/{customerid}")
 	public String loandisbursementdata(@PathVariable int customerid)
 	
 	{
-		
+		LOGGER.info("Disbursing Loan Amount To the Customer");
 		
 		   ssi.savedisbursedata(customerid);
 		
@@ -41,7 +44,7 @@ public class AccountHeadController {
 	public String ledgergeneration(@PathVariable int customerid)
 	
 	{
-		
+		LOGGER.info("Generating Ledger Data for the Customer ");
 		
 		
 		ssi.saveLedger(customerid);
@@ -57,6 +60,8 @@ public class AccountHeadController {
 	
 	{
 		
+		LOGGER.info("If Customer Pays First Emi Updating It Into the Ledger");
+		
 		ssi.updatepaymntstatus(customerid,ledgerid);
 		
 		
@@ -68,12 +73,17 @@ public class AccountHeadController {
 	public String updatepreviouspaymentstatus(@PathVariable int customerid, @PathVariable int ledgerid)
 	
 	{
+		LOGGER.info("If Customer had already paid previous Emi the Updating Previous Emi as paid ");
 		
 		ssi.updatepreviouspaymntstatus(customerid,ledgerid);
 		
 		
 		return "previous emi status chenged to paid";
 	}
+	
+	
+	
+	
 	
 	
 	

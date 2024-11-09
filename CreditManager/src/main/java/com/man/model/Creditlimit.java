@@ -11,8 +11,8 @@ import lombok.Data;
 @Entity
 public class Creditlimit {
 	
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int creditid;
 	
 	private double creditlimit;

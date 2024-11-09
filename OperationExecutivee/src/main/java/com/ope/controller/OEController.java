@@ -7,11 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -165,6 +167,56 @@ public class OEController {
 		return new ResponseEntity<LoanApplication>(loan,HttpStatus.OK);
 		
 	}
+	
+	
+	@PostMapping("/generateCreditScore/{cid}")
+	public ResponseEntity<String> generateCreditScore(@PathVariable int cid) {
+	    // Define the URL of Customer Manager's API
+	    String customerManagerUrl = "http://localhost:8082/cm/put/" + cid;
+
+	    try {
+	        // Call Customer Manager's API to update the CIBIL score for the customer
+	        ResponseEntity<String> response = rt.exchange(customerManagerUrl, HttpMethod.PUT, null, String.class);
+
+	        if (response.getStatusCode() == HttpStatus.OK) {
+	            return new ResponseEntity<>("Credit score generated and updated successfully.", HttpStatus.OK);
+	        } else {
+	            return new ResponseEntity<>("Failed to generate or update credit score.", HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    } catch (Exception e) {
+	        // Handle any exceptions that may arise during the API call
+	        return new ResponseEntity<>("Error occurred while calling Customer Manager service: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

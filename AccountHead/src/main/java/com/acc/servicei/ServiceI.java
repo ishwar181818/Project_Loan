@@ -9,6 +9,8 @@ public interface ServiceI {
 	public String updatepaymntstatus(int customerid, int ledgerid);
 
 	public String updatepreviouspaymntstatus(int customerid, int ledgerid);
+
+	
 	
 	
 

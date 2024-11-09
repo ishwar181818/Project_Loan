@@ -19,6 +19,8 @@ import com.acc.servicei.ServiceI;
 @Service
 public class ServiceImpl implements ServiceI {
 	
+	private String loanstatus="Disbursed";
+	
 	@Autowired
 	 Repo rr;
 
@@ -78,6 +80,8 @@ public class ServiceImpl implements ServiceI {
 			
 			loan.getLd().setAmountpaiddate(formattedDate);
 			
+			loan.setLoanstatus(loanstatus);
+			
 			rr.save(loan);
 			
 		    }
@@ -93,8 +97,14 @@ public class ServiceImpl implements ServiceI {
 			
 		}
 		
-		return null;
+		else
+			
+		{
+			
+			throw new RuntimeException("Customer Not Present");
+		}
 		
+		return null; 
 		
 	}
 
@@ -108,7 +118,9 @@ public class ServiceImpl implements ServiceI {
 		{
 			LoanApplication loan =op.get();
 			
-			
+			if(loan.getSanctionletter().getStatus().equals("Accepted"))
+				
+			{
 			int b = loan.getSanctionletter().getLoantenureinmonth();
 			System.out.println(b);
 			double c = loan.getSanctionletter().getMonthlyemiamount();
@@ -175,17 +187,33 @@ public class ServiceImpl implements ServiceI {
 				
 			}
 			
+			}	
+			
+			else
+				
+			{
+				
+				throw new RuntimeException("Sanction letter is Rejected By Customer no need for Ledger generation");
+				
+			}
 			
 			
+		}
+		
+		else
+			
+		{
+			
+			throw new RuntimeException("Customer Not Present");
 			
 		}
 		
 		
 		
-		
-		
-		
 		return null;
+		
+		
+		
 	}
 
 	
@@ -275,5 +303,7 @@ public class ServiceImpl implements ServiceI {
 	    return "Payment status updated successfully.";
 	
 }
+
+	
 	
 }

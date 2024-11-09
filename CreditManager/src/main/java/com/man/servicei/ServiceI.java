@@ -31,6 +31,10 @@ public interface ServiceI {
 
 
 
+	public String setloanstatus(int customerid, String loanstatus);
+
+
+
 	
 
 	

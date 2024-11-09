@@ -1,8 +1,10 @@
-package com.man.controller;
+ package com.man.controller;
 
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import com.man.servicei.ServiceI;
 
 
 
+
 @RequestMapping("/sa")
 @RestController
 public class CreditManagerController {
@@ -34,13 +37,13 @@ public class CreditManagerController {
 	
 	private String enquirystatus="Approved";
 	
-	
+	public static final Logger LOGGER = LoggerFactory.getLogger(CreditManagerController.class);
 	
 	@PostMapping("/gen/{cid}")
 	public List<Enquiry>generateData(@PathVariable int cid)
 	
 	{
-		
+		LOGGER.info("Posting data Required for CreditLimit");
 		
 		Creditlimit cl = new Creditlimit();
 		
@@ -60,6 +63,7 @@ public class CreditManagerController {
 			if(cid == eq.getCid() && eq.getEnquirystatus().equals(enquirystatus))
 				
 			{
+				cl.setCreditid(cid);
 				
 				if(eq.getCb().getCibilscore() >=701 && eq.getCb().getCibilscore() <= 760)
 					
@@ -114,8 +118,18 @@ public class CreditManagerController {
 				
 			}
 			
+			//Implement below Logic for Interest Rate based on the credit Limit 
+		// Set interest rate based on credit limit
+	    if (cl.getCreditlimit() <= 500000) {
+	        cl.setInterestrate(12); // Higher interest rate for lower credit limits
+	    } else if (cl.getCreditlimit() <= 700000) {
+	        cl.setInterestrate(10); // Medium interest rate
+	    } else if (cl.getCreditlimit() > 700000) {
+	        cl.setInterestrate(8);  // Lower interest rate for higher credit limits
+	    }
 			
-		cl.setInterestrate(2);
+			
+		
 		
 		
 		esi.generatecreditLimit(cl,cid);
@@ -128,7 +142,7 @@ public class CreditManagerController {
 		public List<LoanApplication> getAllLoanSubmitted()
 		
 		{
-			
+			LOGGER.info("Getting Loan Application data Filled By Customer ");
 			
 			List<LoanApplication>l=esi.getAllData();
 			
@@ -140,7 +154,7 @@ public class CreditManagerController {
 		public String AcceptedOrRejectedStatus(@PathVariable int customerid,@PathVariable String status)
 		
 		{
-			 
+			LOGGER.info("IF customer has Accepted or Rejected the Sanctioned loan Proposal Updating that status ");
 			 
 			System.out.println(status);
 		esi.AcceptedOrRejectedStatus(customerid, status);

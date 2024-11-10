@@ -12,6 +12,9 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.acc.exception.CustomerNotFoundException;
+import com.acc.exception.LoanstatusNotSanctionedOrSanctionLetterNotAcceptedException;
+import com.acc.exception.SanctionLetterNotExceptedException;
 import com.acc.model.Ledger;
 import com.acc.model.LoanApplication;
 import com.acc.repo.Repo;
@@ -25,7 +28,7 @@ public class ServiceImpl implements ServiceI {
 	 Repo rr;
 
 	@Override
-	public String savedisbursedata(int customerid) {
+	public LoanApplication savedisbursedata(int customerid) {
 		
 		Optional<LoanApplication>op=rr.findById(customerid);
 		
@@ -82,7 +85,10 @@ public class ServiceImpl implements ServiceI {
 			
 			loan.setLoanstatus(loanstatus);
 			
-			rr.save(loan);
+		LoanApplication loandisbursed=	rr.save(loan);
+		
+		 return loandisbursed;
+		 
 			
 		    }
 		    
@@ -90,10 +96,12 @@ public class ServiceImpl implements ServiceI {
 		    	
 		    {
 		    	
-		    	throw new RuntimeException("Sanction letter is yet to be accepted by customer or it may be Rejected By customer");
+		    	throw new SanctionLetterNotExceptedException("Sanction letter is yet to be accepted by customer or it may be Rejected By customer");
 		    	
 		    }
 			
+		    
+		   
 			
 		}
 		
@@ -101,10 +109,10 @@ public class ServiceImpl implements ServiceI {
 			
 		{
 			
-			throw new RuntimeException("Customer Not Present");
+			throw new CustomerNotFoundException("Customer Not Present");
 		}
 		
-		return null; 
+		
 		
 	}
 
@@ -185,7 +193,11 @@ public class ServiceImpl implements ServiceI {
 				rr.save(loan);
 				
 				
+				
 			}
+			
+			return "Ledger Created";
+			
 			
 			}	
 			
@@ -193,7 +205,7 @@ public class ServiceImpl implements ServiceI {
 				
 			{
 				
-				throw new RuntimeException("Sanction letter is Rejected By Customer no need for Ledger generation");
+				throw new SanctionLetterNotExceptedException("Sanction letter is Rejected By Customer no need for Ledger generation");
 				
 			}
 			
@@ -204,13 +216,13 @@ public class ServiceImpl implements ServiceI {
 			
 		{
 			
-			throw new RuntimeException("Customer Not Present");
+			throw new CustomerNotFoundException("Customer Not Present");
 			
 		}
 		
 		
 		
-		return null;
+		
 		
 		
 		
@@ -304,6 +316,53 @@ public class ServiceImpl implements ServiceI {
 	
 }
 
+	@Override
+	public LoanApplication getacceptdata(int customerid , String status) {
+		
+		
+		Optional <LoanApplication>op=rr.findById(customerid);
+		
+		if(op.isPresent())
+			
+		{
+			
+			
+			LoanApplication loan = op.get();
+			
+	if(loan.getLoanstatus().equals(status) && loan.getSanctionletter().getStatus().equals("Accepted"))
+				
+			{
+				
+		
+		return loan;
+				
+				
+			}
+	
+	else {
+		
+		throw new LoanstatusNotSanctionedOrSanctionLetterNotAcceptedException("Loanstatus NotSanctioned OrSanctionLetter Not Accepted");
+		
+	     }
+			
+		}
+		
+     else
+			
+		{
+			
+			throw new CustomerNotFoundException("Customer Not Present");
+			
+		}
+		
+		
+	}	
+		
+		
+}	
+		
+		
+	
+
 	
 	
-}

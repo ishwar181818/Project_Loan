@@ -31,6 +31,7 @@ import com.lowagie.text.pdf.CMYKColor;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import com.man.exception.CustomerNotFoundException;
 import com.man.model.Creditlimit;
 import com.man.model.Enquiry;
 import com.man.model.LoanApplication;
@@ -73,29 +74,54 @@ public class ServiceImpl implements ServiceI {
 	@Override
 	public void generatecreditLimit(Creditlimit cl,int cid) {
 		
-		List<LoanApplication>l = getAllData();
+		List<LoanApplication>loanApplications = getAllData();
 		
-		for(LoanApplication la : l)
-			
-		{
-			if(cid == la.getCustomerid())
-				
-			{
-				
-				SanctionLetter s1 = new SanctionLetter();
-				
-				s1= la.getSanctionletter();
-				
-				cl.setSanctionletter(s1);
-				
-				
-				
-				rr.save(cl);
-				
-			}
-			
-			
-		}
+//		for(LoanApplication la : loanApplications)
+//			
+//		{
+//			if(cid == la.getCustomerid())
+//				
+//			{
+//				
+//				SanctionLetter s1 = new SanctionLetter();
+//				
+//				s1= la.getSanctionletter();
+//				
+//				cl.setSanctionletter(s1);
+//				
+//				
+//				
+//				rr.save(cl);
+//				
+//			}
+//			
+//			
+//		}
+		
+		
+		boolean customerFound = false;  // Flag to track if the customer is found
+	    
+	    for (LoanApplication la : loanApplications) {
+	        if (cid == la.getCustomerid()) {
+	            customerFound = true;  // Set the flag to true if customer is found
+	            
+	            // Assuming SanctionLetter is already available from the LoanApplication
+	            SanctionLetter s1 = la.getSanctionletter();
+	            cl.setSanctionletter(s1);  // Set the sanction letter in the Creditlimit object
+	            
+	            rr.save(cl);  // Save the Creditlimit to the repository
+	            break;  // Exit the loop early once the match is found
+	        }
+	    }
+	    
+	    // If no matching customer is found, throw an exception
+	    if (!customerFound) {
+	        throw new CustomerNotFoundException("Customer with ID " + cid + " not found ");
+	    }
+		
+		
+		
+		
 		
 		
 		
@@ -312,7 +338,7 @@ double monthlyEmiAmount = calculateEMI(
 		
 		else {
 			
-			throw new RuntimeException("credt id Not Present");
+			throw new CustomerNotFoundException("Customer with ID " + creditid + " not found");
 			
 			
 		}
@@ -436,7 +462,7 @@ double monthlyEmiAmount = calculateEMI(
 		}
 		
 		else {
-			throw new RuntimeException("Customer Not Present");
+			throw new CustomerNotFoundException("Customer with ID " + customerid + " not found ");
 			
 			
 		}

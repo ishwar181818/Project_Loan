@@ -1,14 +1,20 @@
 package com.man.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.man.model.Creditlimit;
 import com.man.model.LoanApplication;
@@ -21,6 +27,9 @@ public class SanctionletterGenerate {
 	
 	@Autowired
 	ServiceI ss;
+	
+	@Autowired
+	RestTemplate rt;
 	
 	public static final Logger LOGGER = LoggerFactory.getLogger(SanctionletterGenerate.class);
 	
@@ -38,7 +47,7 @@ public class SanctionletterGenerate {
 	}
 	
 	@GetMapping("/sendSantionLetterMail/{customerId}")
-	public String sendSanctionLetterMail(@PathVariable("customerId") Integer customerId)
+	public ResponseEntity<String> sendSanctionLetterMail(@PathVariable("customerId") Integer customerId)
 	{
 		System.out.println("Mail sending started");
 		
@@ -48,11 +57,11 @@ public class SanctionletterGenerate {
 		ss.getCustomerData(customerId);
 		
 		
-		return "mail sent";
+		return new ResponseEntity<String>("mail Sent" , HttpStatus.OK);
 		
 	}
 	@PutMapping("/set/{customerid}/{loanstatus}")
-	public String statussanctioned(@PathVariable int customerid,@PathVariable String loanstatus)
+	public ResponseEntity<String> statussanctioned(@PathVariable int customerid,@PathVariable String loanstatus)
 	{
 		
 		
@@ -60,8 +69,10 @@ public class SanctionletterGenerate {
 		
 		
 		
+		//"Loan Status Updated to Sanctioned"
 		
-		return "Loan Status Updated to Sanctioned";
+		
+		return new ResponseEntity<String>("Loan Status Updated to Sanctioned",HttpStatus.CREATED);
 		
 	}
 	
@@ -79,6 +90,31 @@ public class SanctionletterGenerate {
 		
 		
 	}
+	
+	
+	
+	@GetMapping("/getAll")
+	public ResponseEntity<List<LoanApplication>> getAllData()
+	
+	{
+		
+		
+		 String operationExecutiveUrl = "http://localhost:8084/oe/getAllCustomer";  // URL of the OperationExecutive Microservice
+
+	        // Make the GET request to the OperationExecutive service
+	        ResponseEntity<List> response = rt.exchange(
+	                operationExecutiveUrl, HttpMethod.GET, null, List.class);
+
+	        // Check if the response is successful
+	        if (response.getStatusCode() == HttpStatus.OK) {
+	            return ResponseEntity.ok(response.getBody());
+	        } else {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	        }
+	    } 
+	
+	
+	
 	
 	
 	

@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import com.man.model.Enquiry;
 import com.man.model.LoanApplication;
 import com.man.model.SanctionLetter;
+import com.man.exception.CustomerNotFoundException;
 import com.man.model.Creditlimit;
 import com.man.servicei.ServiceI;
 
@@ -40,7 +41,7 @@ public class CreditManagerController {
 	public static final Logger LOGGER = LoggerFactory.getLogger(CreditManagerController.class);
 	
 	@PostMapping("/gen/{cid}")
-	public List<Enquiry>generateData(@PathVariable int cid)
+	public ResponseEntity<String> generateData(@PathVariable int cid)
 	
 	{
 		LOGGER.info("Posting data Required for CreditLimit");
@@ -134,10 +135,10 @@ public class CreditManagerController {
 		
 		esi.generatecreditLimit(cl,cid);
 		
-		return l;
+		return new ResponseEntity<String>("credit limit generated",HttpStatus.OK);
 	}
 	
-	
+	//List<LoanApplication>
 		@GetMapping("/get")
 		public List<LoanApplication> getAllLoanSubmitted()
 		
@@ -151,7 +152,7 @@ public class CreditManagerController {
 		}
 		
 		@PutMapping("/put/{customerid}/{status}")
-		public String AcceptedOrRejectedStatus(@PathVariable int customerid,@PathVariable String status)
+		public ResponseEntity<String> AcceptedOrRejectedStatus(@PathVariable int customerid,@PathVariable String status)
 		
 		{
 			LOGGER.info("IF customer has Accepted or Rejected the Sanctioned loan Proposal Updating that status ");
@@ -161,11 +162,36 @@ public class CreditManagerController {
 			
 			
 			
-			return "Customer has  "+" "+ status+" "+"the loan Sanctioned Proposal";
+			return new ResponseEntity<String>("Customer has"+" "+ status+" "+"the loan Sanctioned Proposal",HttpStatus.OK);
+			
+			//"Customer has  "+" "+ status+" "+"the loan Sanctioned Proposal"
 			
 		}
 		
+		@GetMapping("/getsingledata/{customerid}")
+		public ResponseEntity<LoanApplication> getSingleData(@PathVariable int customerid)
 		
+		{
+			
+			
+			List<LoanApplication>loans = getAllLoanSubmitted();
+			
+			
+			 for (LoanApplication loan : loans) {
+			        if (customerid == loan.getCustomerid()) {
+			            // If customerid matches, return the loan data wrapped in ResponseEntity with HTTP status OK
+			            return ResponseEntity.ok(loan);
+			        }
+			    }
+			    
+			    // If the loop completes without finding a match, throw a custom exception or return an error response
+			    throw new CustomerNotFoundException("Customer with ID " + customerid + " not found");
+			}
+			
+			
+}		
+			
+			
 		
 		
 		
@@ -180,7 +206,7 @@ public class CreditManagerController {
 	
 	
 	
-}
+
 	
 	
 	

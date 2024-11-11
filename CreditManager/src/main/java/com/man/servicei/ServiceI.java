@@ -35,6 +35,10 @@ public interface ServiceI {
 
 
 
+	public List<LoanApplication> getAllCustomerSanctionedData();
+
+
+
 	
 
 	

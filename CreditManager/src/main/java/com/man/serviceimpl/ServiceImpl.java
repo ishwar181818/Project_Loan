@@ -162,6 +162,8 @@ public class ServiceImpl implements ServiceI {
 					
 					sl.setContactdetails(la.getCustomermobileno());
 					
+					
+					
 				}
 				
 			}
@@ -179,6 +181,8 @@ public class ServiceImpl implements ServiceI {
 			sl.setRemarks(sanctionLetter.getRemarks());
 			
 		    sl.setTermscondition(sanctionLetter.getTermscondition());
+		    
+		    
 		
 		    sl.setStatus(sanctionLetter.getStatus());
 		    
@@ -469,6 +473,17 @@ double monthlyEmiAmount = calculateEMI(
 		
 		
 		return "loan Status Updated";
+	}
+	@Override
+	public List<LoanApplication> getAllCustomerSanctionedData() 
+	
+	{
+		
+		
+		List<LoanApplication>list=lar.findAll();
+		
+		
+		return list;
 	}
 	
 

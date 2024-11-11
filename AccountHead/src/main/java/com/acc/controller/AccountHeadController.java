@@ -131,6 +131,21 @@ public class AccountHeadController {
     }
 	
 	
+	@GetMapping("/getAll")////Getting All Loans Dsbursed and ledger data for All the Customerrs
+	  public List<LoanApplication> getAllCustomerData()
+	
+	{
+		
+		
+	List<LoanApplication>loans=ssi.getAllCustomerSanctionedData();
+		
+		
+		
+		return loans;
+		
+	}
+	
+	
 	
 	}
 

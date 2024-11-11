@@ -1,9 +1,11 @@
 package com.ope.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import lombok.Data;
 
 @Entity
@@ -37,5 +39,9 @@ public class SanctionLetter {
 	private String termscondition;
 	
 	private String status;
+	
+	@Lob
+	@Column(length = 9000000)
+	private byte[] sanctionLetter;
 
 }

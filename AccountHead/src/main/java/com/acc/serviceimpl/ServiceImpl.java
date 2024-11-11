@@ -356,6 +356,15 @@ public class ServiceImpl implements ServiceI {
 		}
 		
 		
+	}
+
+	@Override
+	public List<LoanApplication> getAllCustomerSanctionedData() {
+		
+      List<LoanApplication>list=rr.findAll();
+		
+		
+		return list;
 	}	
 		
 		

@@ -1,5 +1,7 @@
 package com.acc.servicei;
 
+import java.util.List;
+
 import com.acc.model.LoanApplication;
 
 public interface ServiceI {
@@ -14,7 +16,7 @@ public interface ServiceI {
 
 	public LoanApplication getacceptdata(int customerid, String status);
 
-	
+	public List<LoanApplication> getAllCustomerSanctionedData();
 	
 	
 

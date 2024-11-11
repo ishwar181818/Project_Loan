@@ -113,6 +113,20 @@ public class SanctionletterGenerate {
 	        }
 	    } 
 	
+	@GetMapping("/getAlll")
+	public List<LoanApplication> getAllCustomerData()
+	
+	{
+		
+		
+		List<LoanApplication>loans=ss.getAllCustomerSanctionedData();
+		
+		
+		
+		return loans;
+		
+	}
+	
 	
 	
 	

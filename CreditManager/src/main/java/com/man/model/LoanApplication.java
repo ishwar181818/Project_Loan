@@ -1,7 +1,6 @@
 package com.man.model;
 
-import java.util.HashSet;
-import java.util.Set;
+
 
 
 
@@ -43,24 +42,7 @@ public class LoanApplication {
 	private String loanstatus;
 	
 	@OneToOne(cascade=CascadeType.ALL)
-	private AllPersonalDoc allpersonaldoc;
-	@OneToOne(cascade=CascadeType.ALL)
-	private FamilyDependentInfo fdo;
-	@OneToOne(cascade=CascadeType.ALL)
-	private CustomerAddress customeraddress;
-	@OneToOne(cascade=CascadeType.ALL)
-	private AccountDetails ac;
-	@OneToOne(cascade=CascadeType.ALL)
-	private GuarantorDetails gd;
-	@OneToOne(cascade=CascadeType.ALL)
-	private LoanDisbursement ld;
-	@OneToMany(cascade=CascadeType.ALL)
-	private Set<Ledger>led = new HashSet<Ledger>();
-	@OneToOne(cascade=CascadeType.ALL)
 	private SanctionLetter sanctionletter;
-	@OneToOne(cascade=CascadeType.ALL)
-	private CustomerVerfication cv;
-	
 	
 	
 	

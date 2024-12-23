@@ -485,6 +485,55 @@ double monthlyEmiAmount = calculateEMI(
 		
 		return list;
 	}
+	@Override
+	public Creditlimit getsingleCreditData(int cid) {
+		
+	Optional<Creditlimit>op	=rr.findById(cid);
+	
+	if(op.isPresent())
+		
+	{
+		Creditlimit credit = op.get();
+		return credit;
+	}
+	
+	else {
+		
+		 return null;
+		
+	}
+		
+		
+		
+		
+	}
+	@Override
+	public void deletedata(int cid) {
+		
+		
+		rr.deleteById(cid);
+		
+	}
+	@Override
+	public LoanApplication getSanctionLetter(int customerid) {
+	
+	Optional<LoanApplication>op	=lar.findById(customerid);
+	
+	if(op.isPresent())
+		
+	{
+		LoanApplication loan=op.get();
+		return loan;
+		
+	}
+	else {
+		
+		return null;
+	}
+		
+	}
+		
+	
 	
 
 	

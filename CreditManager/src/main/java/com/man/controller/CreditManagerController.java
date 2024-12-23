@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +31,7 @@ import com.man.servicei.ServiceI;
 
 @RequestMapping("/sa")
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class CreditManagerController {
 	@Autowired
 	ServiceI esi;
@@ -189,6 +192,29 @@ public class CreditManagerController {
 			}
 			
 		
+		@GetMapping("/getcredit/{cid}")
+		public Creditlimit getcreditLimitData(@PathVariable int cid)
+		
+		{
+			
+			Creditlimit credit=esi.getsingleCreditData(cid);
+			
+			
+		
+			return credit;
+		}
+		
+		@DeleteMapping("del/{cid}")
+		public String deletecreditdata(@PathVariable int cid)
+		
+		{
+			
+			
+			esi.deletedata(cid);
+			
+			return "data has been deleted for"+cid;
+			
+		}
 		
 		
 			

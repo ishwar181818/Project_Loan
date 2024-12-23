@@ -144,6 +144,16 @@ public class AccountHeadController {
 		return loans;
 		
 	}
+	@GetMapping("/get/{status}")
+	public List<LoanApplication> getCustomertodisburseLoan(@PathVariable String status )
+	
+	{
+		
+		
+		
+		return ssi.getAcceptedData(status);
+		
+	}
 	
 	
 	

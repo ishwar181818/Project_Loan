@@ -365,11 +365,20 @@ public class ServiceImpl implements ServiceI {
 		
 		
 		return list;
-	}	
+	}
+
+	@Override
+	public List<LoanApplication> getAcceptedData(String status) {
 		
 		
-}	
 		
+		List<LoanApplication>loan=rr.findBySanctionletter_Status(status);
+		
+		return loan;
+	}
+
+	
+}
 		
 	
 

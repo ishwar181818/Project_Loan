@@ -3,7 +3,8 @@ package com.app.model;
 import java.util.HashSet;
 import java.util.Set;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -16,6 +17,7 @@ import jakarta.persistence.OneToOne;
 import lombok.Data;
 @Entity
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LoanApplication {
 	@Id
 	private int customerid;
@@ -42,6 +44,7 @@ public class LoanApplication {
 	
 	private String loanstatus;
 	
+	@JsonProperty("allpersonaldoc")
 	@OneToOne(cascade=CascadeType.ALL)
 	private AllPersonalDoc allpersonaldoc;
 	@OneToOne(cascade=CascadeType.ALL)

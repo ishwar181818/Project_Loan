@@ -42,6 +42,8 @@ public class CustomerloanServiceImpl implements CustomerloanInterface{
 		
 		
         ObjectMapper om = new ObjectMapper();
+        
+        System.out.println("Output");
 	    
 	    LoanApplication emp = null;
 	      

@@ -1,14 +1,17 @@
 package com.app.controller;
 
 import java.util.Arrays;
+
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +25,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.app.model.Enquiry;
 import com.app.model.LoanApplication;
 import com.app.servicei.CustomerloanInterface;
+
 @RestController
 @RequestMapping("/lo")
+@CrossOrigin(origins = "http://localhost:3000") 
 public class LoanController {
 	
 	@Autowired
@@ -70,12 +75,14 @@ public class LoanController {
 		List<Enquiry>l = Arrays.asList(enq);
 		
 		System.out.println(l);
+		System.out.println(json);
+		System.out.println(pancard);
+		System.out.println("********");
+	    System.out.println(adharcard);
 		
 		esi.saveCustomerData(json,addressproof, pancard,incometax, adharcard,photo,signature,bankCheque,salaryslip,l);
 		
-//		System.out.println(json);
-//		System.out.println(pancard);
-//		System.out.println(aadharcard);
+	
 		
 		return new ResponseEntity<String>("Data Saved", HttpStatus.OK);
 	}

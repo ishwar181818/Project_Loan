@@ -17,6 +17,8 @@ public interface ServiceI {
 	public LoanApplication getacceptdata(int customerid, String status);
 
 	public List<LoanApplication> getAllCustomerSanctionedData();
+
+	public List<LoanApplication> getAcceptedData(String status);
 	
 	
 

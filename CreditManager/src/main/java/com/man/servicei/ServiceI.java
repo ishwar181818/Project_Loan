@@ -39,6 +39,18 @@ public interface ServiceI {
 
 
 
+	public Creditlimit getsingleCreditData(int cid);
+
+
+
+	public void deletedata(int cid);
+
+
+
+	public LoanApplication getSanctionLetter(int customerid);
+
+
+
 	
 
 	

@@ -1,6 +1,7 @@
 package com.cjc.controller;
 
 import java.util.List;
+import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import com.cjc.model.Enquiry;
 import com.cjc.servicei.ServiceI;
@@ -37,6 +39,16 @@ public class EnquiryController {
 	{
 		
 		LOGGER.info("Data is Getting added");
+		
+		 Random rand = new Random();
+		 int randomNumForUsername = rand.nextInt(9000) + 1000;  // Generate a random 4-digit number for username
+	        int randomNumForPassword = rand.nextInt(9000) + 1000;  // Generate a different random 4-digit number for password
+
+	        // Username will be based on the firstname + random number for username
+	        enq.setUsername(enq.getFirstname() + randomNumForUsername);
+
+	        // Password will be based on the firstname + random number for password
+	        enq.setPassword(enq.getFirstname() +"@"+ randomNumForPassword);
 		Enquiry e=ssi.saveData(enq);	
 		return new ResponseEntity<Enquiry>(e,HttpStatus.CREATED);
 	}
@@ -107,5 +119,20 @@ public class EnquiryController {
 		
 		
 	}
+	
+	@GetMapping("/verify/{username}/{password}")
+    public ResponseEntity<?> getUserByCredentials(@PathVariable String username, @PathVariable String password) {
+        // Call the service method to get user by username and password
+        Enquiry enq = ssi.getUserByUsernameAndPassword(username, password);
+        
+        System.out.println(enq.getUsername()+enq.getPassword());
+        
+        if (enq != null) {
+            return new ResponseEntity<>(enq, HttpStatus.OK);  // User found
+        } else {
+            return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);  // User not found
+        }
 
+}
+	
 }

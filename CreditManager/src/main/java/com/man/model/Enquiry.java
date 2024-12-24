@@ -26,6 +26,10 @@ public class Enquiry {
 	
 	private String enquirystatus;
 	
+	private String username;  // New field for username
+
+    private String password;
+	
 	private String pancard;
 	@OneToOne(cascade = CascadeType.ALL)
 	private Cibil cb;

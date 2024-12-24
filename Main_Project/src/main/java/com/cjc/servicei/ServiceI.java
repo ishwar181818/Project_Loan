@@ -2,6 +2,7 @@ package com.cjc.servicei;
 
 import java.util.List;
 
+
 import com.cjc.model.Enquiry;
 
 public interface ServiceI {
@@ -17,6 +18,8 @@ public interface ServiceI {
 	public Enquiry getSingleData(int cid);
 
 	public void deleteAllData();
+
+	public Enquiry getUserByUsernameAndPassword(String username, String password);
 
 	
 

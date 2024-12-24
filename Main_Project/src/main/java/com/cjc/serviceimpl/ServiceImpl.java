@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.cjc.exception.EnquiryNotavailbale;
@@ -18,10 +21,16 @@ import com.cjc.servicei.ServiceI;
 @Service
 public class ServiceImpl implements ServiceI {
 	
+	@Value("${spring.mail.username}")
+	private static String FROM_MAIL;
+	
 	String enquirystatus="pending";
 	
 	@Autowired
 	Repo rr;
+	
+	@Autowired
+    private JavaMailSender emailSender; 
 
 	@Override
 	public Enquiry saveData(Enquiry enq) {
@@ -135,7 +144,27 @@ for(char l:enq.getLastname().toCharArray())
       System.out.println("Last Name is Valid");
       
       
-		Enquiry e=rr.save(enq);
+		Enquiry e = rr.save(enq);
+		
+		// Create the email content directly here
+        String subject = "Your Account Credentials";
+        String text = "Hello " + enq.getFirstname() + ",\n\n" +
+                "Your account has been created successfully. Here are your credentials:\n" +
+                "Username: " + enq.getUsername() + "\n" +
+                "Password: " + enq.getPassword() + "\n\n" +
+                "Regards,\n" +
+                "Your Bank";
+
+        // Create SimpleMailMessage directly inside saveUser method
+        SimpleMailMessage message = new SimpleMailMessage();
+       message.setFrom(FROM_MAIL);
+        message.setTo(enq.getEmail()); // Set recipient email
+        message.setSubject(subject);   // Set subject
+        message.setText(text);         // Set email body text
+
+        // Send the email
+        emailSender.send(message); // Send the email directly
+    
 		
 		
 		return e;
@@ -244,6 +273,14 @@ for(char l:enq.getLastname().toCharArray())
 		rr.deleteAll();
 		
 		
+	}
+
+	@Override
+	public Enquiry getUserByUsernameAndPassword(String username, String password) {
+		
+		
+		
+		return rr.findByUsernameAndPassword(username, password);
 	}
 	
 	

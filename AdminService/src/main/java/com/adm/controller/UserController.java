@@ -61,7 +61,7 @@ public class UserController {
         return firstName + "@" + randomNo;
     }
     
-    @GetMapping("/get/{username}/{password}")
+    @GetMapping("/verify/{username}/{password}")
     public ResponseEntity<?> getUserByCredentials(@PathVariable String username, @PathVariable String password) {
         // Call the service method to get user by username and password
         User user = userService.getUserByUsernameAndPassword(username, password);

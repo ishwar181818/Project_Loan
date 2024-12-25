@@ -21,7 +21,7 @@ public class User {
     private String employeeSalary;
 
     private int employeeAge;
-
+    @Column(length = 50)
     @Enumerated(EnumType.STRING)
     private UserType userType;
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/adm")
@@ -74,6 +75,24 @@ public class UserController {
             return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);  // User not found
         }
     }
+    
+    
+    @GetMapping("/getAll")
+	public ResponseEntity<List<User>> getAllEmployee()
+	
+	{
+		
+		
+		
+	   List<User>list	= userService.getAllEmployee();
+	    
+		
+		
+		
+		
+		return new ResponseEntity<List<User>>(list, HttpStatus.OK);
+		
+	}
     
     
     

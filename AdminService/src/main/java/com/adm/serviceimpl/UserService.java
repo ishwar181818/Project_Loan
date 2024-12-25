@@ -4,6 +4,8 @@ import com.adm.model.User;
 import com.adm.repo.UserRepository;
 import com.adm.servicei.ServiceI;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -50,5 +52,13 @@ public class UserService implements ServiceI {
 	public User getUserByUsernameAndPassword(String username, String password) {
 		 return userRepository.findByUsernameAndPassword(username, password);
 		
+	}
+
+	@Override
+	public List<User> getAllEmployee() {
+		
+		
+		
+		return userRepository.findAll();
 	}
 }

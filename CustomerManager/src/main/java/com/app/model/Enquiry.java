@@ -31,6 +31,8 @@ public class Enquiry {
     private String password;
 	
 	private String pancard;
+	
+	private String enquiryOpenOrClose;
 	@OneToOne(cascade = CascadeType.ALL)
 	private Cibil cb;
 	

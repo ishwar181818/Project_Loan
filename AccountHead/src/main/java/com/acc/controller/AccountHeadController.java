@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import com.acc.servicei.ServiceI;
 
 @RestController
 @RequestMapping("/dis")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AccountHeadController {
 	
 	
@@ -154,6 +156,19 @@ public class AccountHeadController {
 		return ssi.getAcceptedData(status);
 		
 	}
+	
+	@GetMapping("/getloan/{customerid}")
+	public ResponseEntity<LoanApplication> getSingleData(@PathVariable int customerid)
+	
+	{
+		
+		LoanApplication loan=ssi.getSingleData(customerid);
+		
+		return new ResponseEntity<LoanApplication>(loan,HttpStatus.OK);
+		
+	}
+	
+	
 	
 	
 	

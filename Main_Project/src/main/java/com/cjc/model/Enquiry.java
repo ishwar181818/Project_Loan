@@ -32,6 +32,8 @@ public class Enquiry {
     private String password;  // New field for password
 	
 	private String enquirystatus;
+	
+	private String enquiryOpenOrClose;
 	@OneToOne(cascade = CascadeType.ALL)
 	private Cibil cb;
 	

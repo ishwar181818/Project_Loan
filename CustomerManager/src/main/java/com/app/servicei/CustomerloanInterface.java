@@ -24,4 +24,8 @@ public interface CustomerloanInterface {
 
 	public void deleteAllData();
 
+	public void updateCustomerData(int customerid, String json, MultipartFile addressproof, MultipartFile pancard,
+			MultipartFile incometax, MultipartFile adharcard, MultipartFile photo, MultipartFile signature,
+			MultipartFile bankCheque, MultipartFile salaryslip, List<Enquiry> l);
+
 }

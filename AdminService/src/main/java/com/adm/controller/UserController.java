@@ -63,17 +63,13 @@ public class UserController {
     }
     
     @GetMapping("/verify/{username}/{password}")
-    public ResponseEntity<?> getUserByCredentials(@PathVariable String username, @PathVariable String password) {
+    public ResponseEntity<User> getUserByCredentials(@PathVariable String username, @PathVariable String password) {
         // Call the service method to get user by username and password
         User user = userService.getUserByUsernameAndPassword(username, password);
         
         System.out.println(user.getUsername()+user.getPassword());
         
-        if (user != null) {
-            return new ResponseEntity<>(user, HttpStatus.OK);  // User found
-        } else {
-            return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);  // User not found
-        }
+        return new ResponseEntity<User>(user, HttpStatus.OK); 
     }
     
     
@@ -93,6 +89,67 @@ public class UserController {
 		return new ResponseEntity<List<User>>(list, HttpStatus.OK);
 		
 	}
+    
+    
+    @GetMapping("/get/{userid}")
+	public ResponseEntity<User> getEmployee(@PathVariable int userid)
+	
+	{
+		
+		
+		
+	    User user	=userService.getUser(userid);
+	   
+		
+		;
+		
+		
+		return new ResponseEntity<User>(user, HttpStatus.OK);
+		
+	}
+    
+    
+    
+    @PutMapping("/update/{userid}")
+    public ResponseEntity<User> updateEmployee(
+            @PathVariable int userid, // Employee ID from URL
+            @RequestPart("info") String json, // Employee details in JSON format
+            @RequestPart("empImage") MultipartFile empImage, // Pancard file
+            @RequestPart("empPancard") MultipartFile empPancard) { // Aadharcard file
+
+        try {
+            // Delegate the processing of the request to the service
+            User updatedEmployee = userService.updateEmployee(userid, json, empImage, empPancard);
+
+            // Return the updated employee in the response with a 200 OK status
+            return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
+        } catch (Exception e) {
+            // Handle errors (e.g., invalid data or file handling)
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
+
+
+ }
+    
+    @DeleteMapping("/del/{userid}")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable int userid) {
+        // Try to delete the employee
+        try {
+            // Call the service method to delete the user
+            userService.delUser(userid);
+
+            // If the deletion is successful, return 204 No Content
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+        } catch (Exception e) {
+            // If any exception occurs (e.g., employee not found), return 404 Not Found
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+       
     
     
     

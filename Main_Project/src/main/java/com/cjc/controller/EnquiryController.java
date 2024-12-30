@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.cjc.exception.InvalidCredentialsException;
 import com.cjc.model.Enquiry;
 import com.cjc.servicei.ServiceI;
 
@@ -121,18 +121,20 @@ public class EnquiryController {
 	}
 	
 	@GetMapping("/verify/{username}/{password}")
-    public ResponseEntity<?> getUserByCredentials(@PathVariable String username, @PathVariable String password) {
-        // Call the service method to get user by username and password
+    public ResponseEntity<Enquiry> getUserByCredentials(@PathVariable String username, @PathVariable String password) {
+        
+		
         Enquiry enq = ssi.getUserByUsernameAndPassword(username, password);
         
         System.out.println(enq.getUsername()+enq.getPassword());
         
-        if (enq != null) {
-            return new ResponseEntity<>(enq, HttpStatus.OK);  // User found
-        } else {
-            return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);  // User not found
-        }
+//        if (enq != null) {
+//            return new ResponseEntity<>(enq, HttpStatus.OK);  // User found
+//        } else {
+//            throw new InvalidCredentialsException("Invalid Username and password");
+//        }
 
+        return new ResponseEntity<Enquiry>(enq, HttpStatus.OK); 
 }
 	
 }

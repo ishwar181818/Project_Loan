@@ -190,11 +190,13 @@ public class ServiceImpl implements ServiceI {
 				
 				loan.getLed().add(ledger);
 				
+		
 				rr.save(loan);
 				
-				
-				
 			}
+			
+				
+			
 			
 			return "Ledger Created";
 			
@@ -375,6 +377,29 @@ public class ServiceImpl implements ServiceI {
 		List<LoanApplication>loan=rr.findBySanctionletter_Status(status);
 		
 		return loan;
+	}
+
+	@Override
+	public LoanApplication getSingleData(int customerid) {
+		
+		Optional<LoanApplication>op=rr.findById(customerid);
+		
+		if(op.isPresent())
+			
+		{
+			LoanApplication loan=op.get();
+			
+			return loan;
+			
+		}
+		
+		else
+			
+		{
+			
+		 throw new CustomerNotFoundException("Customer Not Found");
+			
+		}
 	}
 
 	

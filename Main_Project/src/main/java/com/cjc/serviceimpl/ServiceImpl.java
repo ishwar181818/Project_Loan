@@ -10,6 +10,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.cjc.exception.EnquiryNotavailbale;
+import com.cjc.exception.InvalidCredentialsException;
 import com.cjc.exception.MailidInvalidException;
 import com.cjc.exception.MobileNoInvalidException;
 import com.cjc.exception.NameNotAccepatable;
@@ -25,6 +26,8 @@ public class ServiceImpl implements ServiceI {
 	private static String FROM_MAIL;
 	
 	String enquirystatus="pending";
+	
+	
 	
 	@Autowired
 	Repo rr;
@@ -143,7 +146,7 @@ for(char l:enq.getLastname().toCharArray())
 
       System.out.println("Last Name is Valid");
       
-      
+      enq.setEnquiryOpenOrClose("Open");
 		Enquiry e = rr.save(enq);
 		
 		// Create the email content directly here
@@ -278,9 +281,13 @@ for(char l:enq.getLastname().toCharArray())
 	@Override
 	public Enquiry getUserByUsernameAndPassword(String username, String password) {
 		
+	Enquiry enq	=rr.findByUsernameAndPassword(username, password);
 		
-		
-		return rr.findByUsernameAndPassword(username, password);
+	if (enq != null) {
+   return enq;
+ } else {
+      throw new InvalidCredentialsException("Invalid Username and password");
+  }
 	}
 	
 	

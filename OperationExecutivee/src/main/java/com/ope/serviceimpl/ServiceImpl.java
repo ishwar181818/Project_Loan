@@ -58,6 +58,8 @@ public class ServiceImpl implements ServiceI{
 			{
 				e.setEnquirystatus("Approved");
 				
+				e.setEnquiryOpenOrClose("Closed");
+				
 				rr.save(e);
 				
 				StringBuilder emailContent = new StringBuilder();
@@ -96,6 +98,7 @@ public class ServiceImpl implements ServiceI{
 			{
 				
 				e.setEnquirystatus("Rejected");
+				e.setEnquiryOpenOrClose("Closed");
 				rr.save(e);
 				
 				StringBuilder emailContent = new StringBuilder();

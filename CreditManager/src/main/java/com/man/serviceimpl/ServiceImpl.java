@@ -156,6 +156,8 @@ public class ServiceImpl implements ServiceI {
 				if (la.getCustomermobileno()== sanctionLetter.getContactdetails())
 					
 				{
+					la.setLoanstatus("Sanctioned");
+					lar.save(la);
 					sl = la.getSanctionletter();
 					
 					sl.setApplicantname(la.getCustomername());

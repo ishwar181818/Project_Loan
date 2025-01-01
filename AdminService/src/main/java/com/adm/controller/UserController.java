@@ -1,5 +1,6 @@
 package com.adm.controller;
 
+import com.adm.count.EmployeeCountDto;
 import com.adm.model.User;
 import com.adm.servicei.ServiceI;
 
@@ -147,6 +148,12 @@ public class UserController {
             // If any exception occurs (e.g., employee not found), return 404 Not Found
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+    
+    @GetMapping("/getUserTypeCounts")
+    public ResponseEntity<EmployeeCountDto> getUserTypeCounts() {
+        EmployeeCountDto counts = userService.getUserTypeCounts();
+        return ResponseEntity.ok(counts);
     }
 
        

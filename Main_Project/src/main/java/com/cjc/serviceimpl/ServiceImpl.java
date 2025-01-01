@@ -9,6 +9,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.cjc.count.EnquiryCountDto;
 import com.cjc.exception.EnquiryNotavailbale;
 import com.cjc.exception.InvalidCredentialsException;
 import com.cjc.exception.MailidInvalidException;
@@ -288,6 +289,12 @@ for(char l:enq.getLastname().toCharArray())
  } else {
       throw new InvalidCredentialsException("Invalid Username and password");
   }
+	}
+
+	@Override
+	public EnquiryCountDto getEnquiryStatusCounts() {
+		// TODO Auto-generated method stub
+		return rr.getEnquiryStatusCounts();
 	}
 	
 	

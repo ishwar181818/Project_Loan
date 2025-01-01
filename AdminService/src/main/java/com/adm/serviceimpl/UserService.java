@@ -1,5 +1,6 @@
 package com.adm.serviceimpl;
 
+import com.adm.count.EmployeeCountDto;
 import com.adm.exception.InvalidCredentialsException;
 import com.adm.model.User;
 import com.adm.repo.UserRepository;
@@ -174,6 +175,14 @@ public class UserService implements ServiceI {
 	        // If the user doesn't exist, throw an exception (handle gracefully in controller)
 	        throw new RuntimeException("Employee not found");
 	    }
+	}
+
+	@Override
+	public EmployeeCountDto getUserTypeCounts() {
+		
+		 return userRepository.getUserTypeCounts();
+		
+		
 	}
 
 }

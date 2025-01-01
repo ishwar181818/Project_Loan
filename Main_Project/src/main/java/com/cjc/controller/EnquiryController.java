@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cjc.count.EnquiryCountDto;
 import com.cjc.exception.InvalidCredentialsException;
 import com.cjc.model.Enquiry;
 import com.cjc.servicei.ServiceI;
@@ -136,5 +137,12 @@ public class EnquiryController {
 
         return new ResponseEntity<Enquiry>(enq, HttpStatus.OK); 
 }
+	 @GetMapping("/getEnquiryStatusCounts")
+	    public ResponseEntity<EnquiryCountDto> getEnquiryStatusCounts() {
+	        EnquiryCountDto counts = ssi.getEnquiryStatusCounts();
+	        return ResponseEntity.ok(counts);
+	    }
+	
+	
 	
 }

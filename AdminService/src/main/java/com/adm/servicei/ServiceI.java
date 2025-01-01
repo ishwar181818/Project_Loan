@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.adm.count.EmployeeCountDto;
 import com.adm.model.User;
 
 public interface ServiceI {
@@ -19,5 +20,7 @@ public interface ServiceI {
 	public User updateEmployee(int userid, String json, MultipartFile empImage, MultipartFile empPancard);
 
 	public void  delUser(int userid);
+
+	public EmployeeCountDto getUserTypeCounts();
 
 }
